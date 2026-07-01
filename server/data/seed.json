@@ -1,0 +1,88 @@
+{
+  "pets": [
+    {
+      "id": "momo",
+      "name": "Momo",
+      "species": "猫",
+      "breed": "英短",
+      "age": "3 岁",
+      "weight": 4.8,
+      "sex": "已绝育",
+      "traits": ["皮肤敏感", "室内生活", "轻度挑食"]
+    },
+    {
+      "id": "biscuit",
+      "name": "Biscuit",
+      "species": "狗",
+      "breed": "柯基",
+      "age": "1 岁 8 个月",
+      "weight": 11.2,
+      "sex": "公",
+      "traits": ["精力旺盛", "训练中", "偶尔护食"]
+    }
+  ],
+  "logs": [
+    {
+      "id": "log-1",
+      "petId": "momo",
+      "date": "2026-07-01",
+      "appetite": 4,
+      "hydration": 3,
+      "mood": 4,
+      "stool": "正常",
+      "symptom": "轻微抓挠",
+      "note": "耳后有一点发红，精神正常。",
+      "risk": "medium",
+      "createdAt": "2026-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "log-2",
+      "petId": "momo",
+      "date": "2026-06-16",
+      "appetite": 4,
+      "hydration": 4,
+      "mood": 4,
+      "stool": "正常",
+      "symptom": "无明显异常",
+      "note": "完成驱虫提醒。",
+      "risk": "low",
+      "createdAt": "2026-06-16T00:00:00.000Z"
+    },
+    {
+      "id": "log-3",
+      "petId": "biscuit",
+      "date": "2026-07-01",
+      "appetite": 5,
+      "hydration": 4,
+      "mood": 5,
+      "stool": "偏软",
+      "symptom": "饭后兴奋跳跃",
+      "note": "散步后恢复正常。",
+      "risk": "low",
+      "createdAt": "2026-07-01T00:00:00.000Z"
+    }
+  ],
+  "reminders": [
+    { "id": "r-1", "petId": "momo", "title": "年度体检", "due": "2026-07-06", "type": "checkup", "done": false },
+    { "id": "r-2", "petId": "momo", "title": "外驱提醒", "due": "2026-07-09", "type": "medicine", "done": false },
+    { "id": "r-3", "petId": "biscuit", "title": "狂犬疫苗", "due": "2026-07-15", "type": "vaccine", "done": false },
+    { "id": "r-4", "petId": "biscuit", "title": "洗护预约", "due": "2026-07-04", "type": "care", "done": true }
+  ],
+  "training": [
+    { "id": "t-1", "petId": "biscuit", "title": "等待指令", "focus": "冲动控制", "minutes": 8, "done": false },
+    { "id": "t-2", "petId": "biscuit", "title": "护食脱敏", "focus": "安全喂食", "minutes": 12, "done": false },
+    { "id": "t-3", "petId": "momo", "title": "猫包适应", "focus": "就医减压", "minutes": 6, "done": true },
+    { "id": "t-4", "petId": "momo", "title": "剪甲接触", "focus": "护理配合", "minutes": 5, "done": false }
+  ],
+  "expenses": [
+    { "id": "e-1", "petId": "momo", "title": "处方粮", "amount": 268, "category": "食品" },
+    { "id": "e-2", "petId": "momo", "title": "驱虫", "amount": 96, "category": "护理" },
+    { "id": "e-3", "petId": "biscuit", "title": "洗护", "amount": 158, "category": "服务" },
+    { "id": "e-4", "petId": "biscuit", "title": "训练零食", "amount": 72, "category": "训练" }
+  ],
+  "services": [
+    { "id": "s-1", "title": "安心宠物医院", "distance": "1.4 km", "tag": "夜间急诊", "rating": "4.8", "iconKey": "hospital" },
+    { "id": "s-2", "title": "轻洗宠物护理", "distance": "0.8 km", "tag": "上门洗护", "rating": "4.7", "iconKey": "scissors" },
+    { "id": "s-3", "title": "城市宠物保险顾问", "distance": "线上", "tag": "理赔咨询", "rating": "4.6", "iconKey": "shield" }
+  ]
+}
