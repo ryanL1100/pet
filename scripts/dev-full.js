@@ -5,7 +5,7 @@ const commands = [
   {
     name: "api",
     command: process.execPath,
-    args: [join("server", "index.js")],
+    args: ["--env-file-if-exists=.env", "--no-warnings=ExperimentalWarning", join("server", "index.js")],
   },
   {
     name: "web",

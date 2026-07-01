@@ -3,9 +3,15 @@ import {
   ApiError,
   addHealthLog,
   ensureDb,
+  enhanceTriage,
+  generateCarePlan,
   generateReport,
+  getAiProviderStatus,
   getBootstrapData,
-  triageText,
+  getUserByToken,
+  loginUser,
+  logoutUser,
+  registerUser,
   updateReminder,
   updateTraining,
 } from "./store.js";
@@ -17,7 +23,7 @@ function sendJson(res, status, payload) {
   res.writeHead(status, {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,POST,PATCH,OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
     "Content-Type": "application/json; charset=utf-8",
   });
   res.end(JSON.stringify(payload));
@@ -41,6 +47,16 @@ function notFound(res) {
   sendJson(res, 404, { error: { code: "not_found", message: "接口不存在" } });
 }
 
+function getBearerToken(req) {
+  const header = req.headers.authorization;
+  if (!header || !header.startsWith("Bearer ")) return "";
+  return header.slice("Bearer ".length).trim();
+}
+
+async function requireUser(req) {
+  return getUserByToken(getBearerToken(req));
+}
+
 async function handleRequest(req, res) {
   const url = new URL(req.url ?? "/", `http://${req.headers.host ?? `${host}:${port}`}`);
   const pathname = url.pathname;
@@ -55,37 +71,82 @@ async function handleRequest(req, res) {
     return;
   }
 
+  if (req.method === "POST" && pathname === "/api/auth/register") {
+    sendJson(res, 201, await registerUser(await readJson(req)));
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/auth/login") {
+    sendJson(res, 200, await loginUser(await readJson(req)));
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/auth/logout") {
+    sendJson(res, 200, await logoutUser(getBearerToken(req)));
+    return;
+  }
+
+  if (req.method === "GET" && pathname === "/api/me") {
+    sendJson(res, 200, { user: await requireUser(req) });
+    return;
+  }
+
+  if (req.method === "GET" && pathname === "/api/ai/status") {
+    await requireUser(req);
+    sendJson(res, 200, getAiProviderStatus());
+    return;
+  }
+
   if (req.method === "GET" && pathname === "/api/bootstrap") {
-    sendJson(res, 200, await getBootstrapData());
+    const user = await requireUser(req);
+    sendJson(res, 200, await getBootstrapData(user.id));
     return;
   }
 
   if (req.method === "POST" && pathname === "/api/logs") {
-    sendJson(res, 201, { log: await addHealthLog(await readJson(req)) });
+    const user = await requireUser(req);
+    sendJson(res, 201, { log: await addHealthLog(user.id, await readJson(req)) });
     return;
   }
 
   if (req.method === "POST" && pathname === "/api/triage") {
+    const user = await requireUser(req);
     const body = await readJson(req);
-    sendJson(res, 200, triageText(body.text));
+    sendJson(res, 200, await enhanceTriage(user.id, body));
+    return;
+  }
+
+  if (req.method === "POST" && pathname === "/api/ai/triage") {
+    const user = await requireUser(req);
+    sendJson(res, 200, await enhanceTriage(user.id, await readJson(req)));
+    return;
+  }
+
+  const carePlanMatch = pathname.match(/^\/api\/pets\/([^/]+)\/care-plan$/);
+  if (req.method === "GET" && carePlanMatch) {
+    const user = await requireUser(req);
+    sendJson(res, 200, await generateCarePlan(user.id, decodeURIComponent(carePlanMatch[1])));
     return;
   }
 
   const reminderMatch = pathname.match(/^\/api\/reminders\/([^/]+)$/);
   if (req.method === "PATCH" && reminderMatch) {
-    sendJson(res, 200, { reminder: await updateReminder(decodeURIComponent(reminderMatch[1]), await readJson(req)) });
+    const user = await requireUser(req);
+    sendJson(res, 200, { reminder: await updateReminder(user.id, decodeURIComponent(reminderMatch[1]), await readJson(req)) });
     return;
   }
 
   const trainingMatch = pathname.match(/^\/api\/training\/([^/]+)$/);
   if (req.method === "PATCH" && trainingMatch) {
-    sendJson(res, 200, { training: await updateTraining(decodeURIComponent(trainingMatch[1]), await readJson(req)) });
+    const user = await requireUser(req);
+    sendJson(res, 200, { training: await updateTraining(user.id, decodeURIComponent(trainingMatch[1]), await readJson(req)) });
     return;
   }
 
   const reportMatch = pathname.match(/^\/api\/pets\/([^/]+)\/report$/);
   if (req.method === "GET" && reportMatch) {
-    sendJson(res, 200, await generateReport(decodeURIComponent(reportMatch[1])));
+    const user = await requireUser(req);
+    sendJson(res, 200, await generateReport(user.id, decodeURIComponent(reportMatch[1])));
     return;
   }
 

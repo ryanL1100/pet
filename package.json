@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "dev:api": "node server/index.js",
+    "dev:api": "node --env-file-if-exists=.env --no-warnings=ExperimentalWarning server/index.js",
     "dev:full": "node scripts/dev-full.js",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1"

@@ -52,6 +52,77 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.auth-shell {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(100%, 430px);
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.auth-brand {
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.auth-brand small {
+  color: var(--muted);
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.auth-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  color: var(--ink);
+  background: #f8fbf9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.auth-tabs button.active {
+  color: #fffdf8;
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-form .primary-button {
+  width: 100%;
+}
+
+.loading-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
@@ -181,6 +252,56 @@ textarea:focus {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 22px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 0;
+}
+
+.user-pill {
+  display: grid;
+  min-height: 42px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.user-pill strong,
+.user-pill span {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-pill strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.user-pill span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border: 1px solid #b8dad3;
+  border-radius: 8px;
+}
+
+.icon-button:hover {
+  background: #cbe5df;
 }
 
 .api-banner {
@@ -583,6 +704,44 @@ label,
   border-radius: 8px;
 }
 
+.ai-status,
+.source-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 36px;
+  margin-bottom: 14px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.ai-status small,
+.source-line small {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  font-weight: 600;
+  opacity: 0.78;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ai-status.ready {
+  color: var(--green);
+  background: var(--green-soft);
+  border: 1px solid #b7dcc6;
+}
+
+.ai-status.fallback,
+.source-line {
+  color: var(--mustard);
+  background: var(--mustard-soft);
+  border: 1px solid #ead4a8;
+}
+
 .triage-box {
   display: grid;
   gap: 12px;
@@ -624,6 +783,62 @@ label,
 .triage-list span {
   color: var(--muted);
   line-height: 1.65;
+}
+
+.source-line {
+  margin: 12px 0 0;
+}
+
+.insight-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 14px;
+  background: #f8fbf9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.insight-list ul,
+.daily-plan-row ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.care-plan-panel {
+  grid-column: 1 / -1;
+}
+
+.care-plan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.care-plan-content {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.daily-plan {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.daily-plan-row {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: #f8fbf9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
 }
 
 .report-box {
@@ -753,6 +968,15 @@ label,
     flex-direction: column;
   }
 
+  .topbar-actions {
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .user-pill {
+    flex: 1;
+  }
+
   .topbar h1 {
     font-size: 28px;
   }
@@ -798,7 +1022,8 @@ label,
   }
 
   .form-footer,
-  .service-footer {
+  .service-footer,
+  .care-plan-head {
     align-items: stretch;
     flex-direction: column;
   }
@@ -806,5 +1031,16 @@ label,
   .primary-button,
   .ghost-button {
     width: 100%;
+  }
+
+  .daily-plan {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-status,
+  .source-line {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 10px 12px;
   }
 }
